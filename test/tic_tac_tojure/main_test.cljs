@@ -4,7 +4,26 @@
    [tic-tac-tojure.main :refer [check-row
                                 check-col
                                 check-left-diag
-                                check-right-diag]]))
+                                check-right-diag
+                                win-state?]]))
+
+(deftest win-state?-test
+  (testing "win-state?:"
+    (testing "3 0s returns false"
+      (is (= false
+             (win-state? [0 0 0]))))
+    (testing "3 1s returns 1"
+      (is (= 1
+             (win-state? [1 1 1]))))
+    (testing "2 1s and a 0 returns false"
+      (is (= false
+             (win-state? [1 1 0]))))
+    (testing "2 1s and a 2 returns false"
+      (is (= false
+             (win-state? [1 1 2]))))
+    (testing "2 2s and a 1 returns false"
+      (is (= false
+             (win-state? [2 1 2]))))))
 
 (deftest check-row-test
   (testing "check-row:"
