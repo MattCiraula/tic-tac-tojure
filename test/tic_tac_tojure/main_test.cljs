@@ -47,7 +47,13 @@
                (check-row b 0))))
       (testing "2 2s in a row returns false"
         (is (= false
-               (check-row b 2)))))))
+               (check-row b 2)))))
+    (testing "2 1s and a 2 in a row returns false"
+      (is (= false
+             (check-row [[1 2 1]
+                         [0 0 0]
+                         [0 0 0]]
+                        0))))))
 
 (deftest check-col-test
   (testing "check-col:"
@@ -71,7 +77,13 @@
                (check-col b 0))))
       (testing "2 2s in a col returns false"
         (is (= false
-               (check-col b 2)))))))
+               (check-col b 2)))))
+    (testing "2 2s and a 1 in a col returns false"
+      (is (= false
+             (check-col [[1 0 0]
+                         [1 0 0]
+                         [2 0 0]]
+                        0))))))
 
 (deftest check-left-diag-test
   (testing "check-left-diag:"
@@ -99,7 +111,12 @@
       (is (= false
              (check-left-diag [[2 2 2]
                                [2 0 2]
-                               [2 2 0]]))))))
+                               [2 2 0]]))))
+    (testing "2 1s and a 2 returns false"
+      (is (= false
+             (check-left-diag [[2 0 0]
+                               [0 1 0]
+                               [0 0 1]]))))))
 
 (deftest check-right-diag-test
   (testing "check-right-diag:"
@@ -127,4 +144,9 @@
       (is (= false
              (check-right-diag [[0 0 1]
                                 [0 2 0]
-                                [0 0 0]]))))))
+                                [0 0 0]]))))
+    (testing "2 2s and a 1 in right diag returns false"
+      (is (= false
+             (check-right-diag [[0 0 2]
+                                [0 2 0]
+                                [1 0 0]]))))))
