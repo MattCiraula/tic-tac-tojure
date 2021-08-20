@@ -20,6 +20,7 @@
 (defn win-state?
   [[a b c]]
   (and (not-any? #(= 0 %) [a b c])
+       (every? #(= a %) [a b c])
        (and a b c)))
 
 (defn check-row
