@@ -81,3 +81,31 @@
              (check-left-diag [[2 2 2]
                                [2 0 2]
                                [2 2 0]]))))))
+
+(deftest check-right-diag-test
+  (testing "check-right-diag:"
+    (testing "3 0s in right diag returns false"
+      (is (= false
+             (check-right-diag [[1 1 0]
+                                [1 0 1]
+                                [0 1 1]]))))
+    (testing "3 1s in right diag returns 1"
+      (is (= 1
+             (check-right-diag [[0 0 1]
+                                [0 1 0]
+                                [1 0 0]]))))
+    (testing "3 2s in right diag returns 2"
+      (is (= 2
+             (check-right-diag [[1 1 2]
+                                [1 2 1]
+                                [2 1 1]]))))
+    (testing "2 1s in right diag returns false"
+      (is (= false
+             (check-right-diag [[1 1 1]
+                                [1 1 1]
+                                [0 1 1]]))))
+    (testing "1 2 in the right diag returns false"
+      (is (= false
+             (check-right-diag [[0 0 1]
+                                [0 2 0]
+                                [0 0 0]]))))))
