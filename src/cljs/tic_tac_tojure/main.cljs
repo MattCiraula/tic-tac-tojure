@@ -61,6 +61,15 @@
 
 (def turn (atom 1))
 
+(defn check-for-tie
+  []
+  (when  (->>  (flatten @board)
+               (map #(or  (= % 1)  (= % 2)))
+               (every? true?))
+    (js/alert  "Tie game!")
+    (reset! turn 1)
+    (reset! board  [[0 0 0]  [0 0 0]  [0 0 0]])))
+
 (defn game-over
   []
   (js/alert (str (sym @turn) " wins!"))
@@ -95,7 +104,7 @@
     (reset! turn 2)
     (reset! turn 1)))
 
-(defn button-clicked
+(defn box-click
   [row col]
   (when (and (validate-input row)
              (validate-input col)
@@ -103,43 +112,33 @@
     (swap! board set-2d row col @turn)
     (if (check-all @board)
       (game-over)
-      (next-turn))))
+      (do (next-turn)
+          (check-for-tie))))) ; check after so next-turn doesn't mess with the fresh game
 
 (defn show-board
   []
-  (let [ind (mapv sym (flatten @board))]
+  (let  [ind  (mapv sym  (flatten @board))]
     [:table
-     [:tr [:td (ind 0)]            [:td.vertical (ind 1)] [:td (ind 2)]]
-     [:tr [:td.horizontal (ind 3)] [:td.center (ind 4)]   [:td.horizontal (ind 5)]]
-     [:tr [:td (ind 6)]            [:td.vertical (ind 7)] [:td (ind 8)]]]))
-
-(defn atom-input [value]
-  [:input {:type "text"
-           :value @value
-           :on-change #(reset! value (-> % .-target .-value))}])
-
-(defn my-button
-  [row col]
-  [:button {:on-click #(button-clicked (js/parseInt @row)
-                                       (js/parseInt @col))}
-   "place mark"])
-
-(defn shared-state []
-  (let [row (r/atom "")
-        col (r/atom "")]
-    (fn []
-      [:div
-       [:h3 "It's " (sym @turn) "'s turn"]
-       (show-board)
-       [:p "row: " [atom-input row]]
-       [:p "column: " [atom-input col]]
-       (my-button row col)])))
+     [:tr
+      [:td            {:on-click #(box-click 0 0)}  (ind 0)]
+      [:td.vertical   {:on-click #(box-click 0 1)}  (ind 1)]
+      [:td            {:on-click #(box-click 0 2)}  (ind 2)]]
+     [:tr
+      [:td.horizontal  {:on-click #(box-click 1 0)}  (ind 3)]
+      [:td.center     {:on-click #(box-click 1 1)}  (ind 4)]
+      [:td.horizontal  {:on-click #(box-click 1 2)}  (ind 5)]]
+     [:tr
+      [:td            {:on-click #(box-click 2 0)}  (ind 6)]
+      [:td.vertical   {:on-click #(box-click 2 1)}  (ind 7)]
+      [:td            {:on-click #(box-click 2 2)}  (ind 8)]]]))
 
 (defn show-page
   []
-  (let [col (r/atom "col")
-        row (r/atom "row")]
-    (shared-state)))
+  (fn  []
+    [:div
+     [:h3  "It's "  (sym @turn)  "'s turn"]
+     (show-board)]))
 
-(dom/render [show-page]
-            (.-body js/document))
+(dom/render  [show-page]
+             (.-body js/document))
+
