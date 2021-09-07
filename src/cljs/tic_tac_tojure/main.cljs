@@ -6,7 +6,7 @@
   "print player symbol 0 = space, 1 = x, 2 = O"
   [n]
   (case n
-    0 "_"
+    0 ""
     1 "X"
     2 "O"))
 
@@ -109,9 +109,9 @@
   []
   (let [ind (mapv sym (flatten @board))]
     [:table
-     [:tr [:td (ind 0)] [:td (ind 1)] [:td (ind 2)]]
-     [:tr [:td (ind 3)] [:td (ind 4)] [:td (ind 5)]]
-     [:tr [:td (ind 6)] [:td (ind 7)] [:td (ind 8)]]]))
+     [:tr [:td (ind 0)]            [:td.vertical (ind 1)] [:td (ind 2)]]
+     [:tr [:td.horizontal (ind 3)] [:td.center (ind 4)]   [:td.horizontal (ind 5)]]
+     [:tr [:td (ind 6)]            [:td.vertical (ind 7)] [:td (ind 8)]]]))
 
 (defn atom-input [value]
   [:input {:type "text"
